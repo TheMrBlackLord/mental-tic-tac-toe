@@ -8,9 +8,7 @@ const PORT = process.env.PORT || 5000;
 const { app } = expressWs(express());
 
 app.ws('/', (ws, req) => {
-   ws.on('open', () => {
-      ws.send('Hello World!');
-   })
+   ws.send('Hello World');
 });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
