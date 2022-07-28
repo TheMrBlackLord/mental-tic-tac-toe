@@ -3,3 +3,9 @@
    justify-content: center;
    align-items: center;
 }
+.editBtn {
+   opacity: 0;
+}
+.username:hover .editBtn {
+   opacity: 1;
+}
