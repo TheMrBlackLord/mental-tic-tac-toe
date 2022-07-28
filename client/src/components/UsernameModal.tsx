@@ -4,40 +4,44 @@ import React, {
    SetStateAction,
    ChangeEvent,
    useState,
-   MouseEvent
+   MouseEvent,
 } from "react";
-import { Button, Form, Modal } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../hooks';
+import { Button, Form, Modal } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "../hooks";
 import { setUsername } from "../store/GameSlice";
+import { UsernamePayload } from "../types";
 
 interface ChangeUsernameModalProps {
    showModal: boolean;
    setShowModal: Dispatch<SetStateAction<boolean>>;
-   canCancel: boolean;
 }
 
 const ChangeUsernameModal: FC<ChangeUsernameModalProps> = ({
    showModal,
    setShowModal,
-   canCancel
 }) => {
    const dispatch = useAppDispatch();
-   const handleCancel = () => setShowModal(false);
    const username = useAppSelector((state) => state.username);
-   const [usernameInput, setUsernameInput] = useState<string>(username);
+   const [formData, setFormData] = useState<UsernamePayload>({
+      username,
+      remember: false,
+   });
 
    const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
-      setUsernameInput(e.target.value);
+      setFormData({ ...formData, username: e.target.value });
+   };
+   const handleRememberChange = (e: ChangeEvent<HTMLInputElement>) => {
+      setFormData({ ...formData, remember: e.target.checked });
    };
    const handleSaveUsername = (e: MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       setShowModal(false);
-      dispatch(setUsername(usernameInput));
+      dispatch(setUsername(formData));
    };
 
    return (
-      <Modal show={showModal} onHide={handleCancel}>
-         <Modal.Header closeButton={canCancel}>
+      <Modal show={showModal}>
+         <Modal.Header>
             <Modal.Title>Enter username</Modal.Title>
          </Modal.Header>
          <Form>
@@ -46,26 +50,25 @@ const ChangeUsernameModal: FC<ChangeUsernameModalProps> = ({
                   <Form.Control
                      type="text"
                      placeholder="Username"
-                     value={usernameInput}
+                     value={formData.username}
                      onChange={handleUsernameChange}
+                  />
+               </Form.Group>
+               <Form.Group className="mt-3">
+                  <Form.Check
+                     type="checkbox"
+                     label="Remember me"
+                     checked={formData.remember}
+                     onChange={handleRememberChange}
                   />
                </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-               {canCancel && (
-                  <Button
-                     variant="primary"
-                     type="button"
-                     onClick={handleCancel}
-                  >
-                     Cancel
-                  </Button>
-               )}
                <Button
                   variant="success"
                   type="submit"
                   onClick={handleSaveUsername}
-                  disabled={!usernameInput}
+                  disabled={!formData.username}
                >
                   Save
                </Button>

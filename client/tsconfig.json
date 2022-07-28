@@ -22,6 +22,6 @@
   },
   "include": [
     "src",
-    "types.d.ts"
+    "declarations.d.ts"
   ]
 }
