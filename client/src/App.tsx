@@ -7,23 +7,27 @@ import { useAppSelector } from "./hooks";
 import styles from "./styles/App.module.css";
 
 function App() {
-   const username = useAppSelector((state) => state.username);
+   const { username, socket } = useAppSelector((state) => state);
    const [showModal, setShowModal] = useState<boolean>(!Boolean(username));
-   
+
    return (
       <>
          <Header />
-         <Container fluid>
-            <Row>
-               <Col sm={3}>Player 1</Col>
-               <Col sm={6}>
-                  <main className={styles.main}>
+         <main className={styles.main}>
+            <Container fluid>
+               <Row>
+                  <Col sm={3} className={styles.column}>
+                     You ({username})
+                  </Col>
+                  <Col sm={6} className={styles.column}>
                      <TicTacToeComponent />
-                  </main>
-               </Col>
-               <Col sm={3}> Player 2</Col>
-            </Row>
-         </Container>
+                  </Col>
+                  <Col sm={3} className={styles.column}>
+                     Player 2
+                  </Col>
+               </Row>
+            </Container>
+         </main>
          <ChangeUsernameModal
             showModal={showModal}
             setShowModal={setShowModal}

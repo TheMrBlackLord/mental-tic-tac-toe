@@ -1,7 +1,11 @@
 .main {
-   width: 100%;
-   height: calc(100vh - 40px);
+   height: calc(100vh - 47px);
    display: flex;
+   align-items: center;
+}
+.column {
+   display: flex;
+   flex-direction: column;
    justify-content: center;
    align-items: center;
 }

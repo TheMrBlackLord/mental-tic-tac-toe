@@ -18,7 +18,7 @@ const Header = () => {
                   <div className={styles.username}>
                      <span>{username}</span>
                      &nbsp;
-                     <Button variant="outline-info" onClick={handleEdit} className={styles.editBtn}>
+                     <Button variant="outline-info" size="sm" onClick={handleEdit} className={styles.editBtn}>
                         Edit
                      </Button>
                   </div>
