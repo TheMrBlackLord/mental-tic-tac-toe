@@ -6,12 +6,14 @@ import { useAppSelector } from "./hooks";
 import styles from "./styles/App.module.css";
 import { useParams } from "react-router-dom";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import { Player } from "./types";
 
 function App() {
    const username = useAppSelector((state) => state.username);
    const params = useParams();
    const [showModal, setShowModal] = useState<boolean>(!Boolean(username));
-   const { sendJsonMessage, readyState } = useWebSocket(process.env.REACT_APP_SOCKET_URL as string);
+   const [opponent, setOpponent] = useState<Player | null>(null);
+   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(process.env.REACT_APP_SOCKET_URL as string);
 
    useEffect(() => {
       if (readyState === ReadyState.OPEN && username) {
@@ -22,7 +24,12 @@ function App() {
          };
          sendJsonMessage(data);
       }
-   }, [readyState, sendJsonMessage, username, params.id]);
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [readyState, username]);
+
+   useEffect(() => {
+      console.log(lastJsonMessage);
+   }, [lastJsonMessage]);
 
    return (
       <>
