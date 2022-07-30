@@ -3,35 +3,60 @@ import { WebSocket } from 'ws';
 import _ from "lodash";
 import { Chars } from "../types";
 
-export function connectHandler(games: IGames, ws: WebSocket, msg: IConnectMessage) {
+export function connectHandler(
+   games: IGames,
+   ws: WebSocket,
+   msg: IConnectMessage,
+   WSMap: Map<string, WebSocket>
+) {
+   let player: IPlayer;
    if (games.hasOwnProperty(msg.room)) {
       const game = games[msg.room];
       if (game.players.length === 2) {
-         ws.send(JSON.stringify({ type: 'error', message: 'Game is full' }));
+         ws.send(JSON.stringify({ type: "error", message: "Game is full" }));
          return;
       }
-      const candidate = game.players.find(player => player.username === msg.username);
+      const candidate = game.players.find(
+         (player) => player.username === msg.username
+      );
       if (candidate) {
          ws.send(
-            JSON.stringify({ type: 'error', message: 'You already joined' })
+            JSON.stringify({ type: "error", message: "You already joined" })
          );
          return;
       }
-      const player: IPlayer = {
-         char: game.players[0].char === 'x' ? 'o' : 'x',
+      player = {
+         char: game.players[0].char === "x" ? "o" : "x",
          username: msg.username,
-         confirmed: false
+         confirmed: false,
       };
       game.players.push(player);
+      const opponentWS = WSMap.get(game.players[0].username) as WebSocket;
+      opponentWS.send(
+         JSON.stringify({
+            type: "opponent_connected",
+            player
+         })
+      );
+      ws.send(JSON.stringify({
+         type: "get_opponent",
+         player: game.players[0]
+      }));
    } else {
-      const player: IPlayer = {
-         char: _.sample(['x', 'o']) as Chars,
+      player = {
+         char: _.sample(["x", "o"]) as Chars,
          username: msg.username,
-         confirmed: false
+         confirmed: false,
       };
-      games[+msg.room] = {
+      games[msg.room] = {
          players: [player],
-         fieldState: _.chunk(Array(9).fill(''), 3)
+         fieldState: _.chunk(Array(9).fill(""), 3),
       };
    }
+   ws.send(
+      JSON.stringify({
+         type: "connected",
+         player,
+      })
+   );
 }

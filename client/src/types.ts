@@ -7,3 +7,7 @@ export type Player = {
    char: 'x' | 'o';
    confirmed: boolean;
 }
+export type Players = {
+   me: Player | null;
+   opponent: Player | null;
+}
