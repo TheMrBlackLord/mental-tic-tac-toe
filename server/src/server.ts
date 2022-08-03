@@ -2,8 +2,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 import expressWs from 'express-ws';
 import { WebSocket } from 'ws';
-import { IConnectMessage, IDisconnectMessage, IConfirmMessage, IGames, IMessage } from './interfaces';
-import { connectHandler, disconnectHandler, confirmHandler } from "./handlers";
+import { IConnectMessage, IDisconnectMessage, IConfirmMessage, IGames, IMessage, ITurnMessage } from './interfaces';
+import { connectHandler, disconnectHandler, confirmHandler, startGameHandler, turnHandler, victoryHandler } from "./handlers";
 
 dotenv.config();
 
@@ -26,6 +26,11 @@ app.ws('/', (ws) => {
             break;
          case 'confirm':
             confirmHandler(GAMES, ws, message as IConfirmMessage, WSMap);
+            startGameHandler(GAMES, (message as IConfirmMessage).room, WSMap);
+            break;
+         case 'turn':
+            turnHandler(GAMES, message as ITurnMessage, WSMap);
+            victoryHandler(GAMES, (message as ITurnMessage).room, WSMap);
             break;
       }
       ws.send(JSON.stringify(GAMES));

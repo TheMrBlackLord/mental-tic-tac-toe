@@ -9,3 +9,27 @@
    border-radius: 4px;
    cursor: pointer;
 }
+
+.charX-enter:before {
+   content: '×';
+   font-size: 100px;
+   font-weight: 500;
+   text-transform: uppercase;
+   color: #545fc2;
+   line-height: 30px;
+}
+/* .charX-exit:before {
+
+} */
+
+.charO-enter:before {
+   content: '𐩒';
+   font-size: 75px;
+   font-weight: bold;
+   text-transform: uppercase;
+   color: #c22c2c;
+   line-height: 60px;
+}
+/* .charO-exit:before {
+
+} */

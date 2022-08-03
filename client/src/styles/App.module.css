@@ -10,13 +10,21 @@
    align-items: center;
 }
 
-.charX {
-   font-size: 40px;
+.charX:before {
+   content: '×';
+   font-size: 100px;
+   font-weight: 500;
+   text-transform: uppercase;
    color: #545fc2;
+   line-height: 30px;
 }
-.charO {
-   font-size: 40px;
+.charO:before {
+   content: '𐩒';
+   font-size: 75px;
+   font-weight: bold;
+   text-transform: uppercase;
    color: #c22c2c;
+   line-height: 60px;
 }
 
 .confirmed {
@@ -28,4 +36,10 @@
    font-size: 20px;
    font-weight: bold;
    color: #dc3545;
+}
+
+.turn {
+   font-size: 45px;
+   font-weight: bold;
+   color: #e99f00; 
 }

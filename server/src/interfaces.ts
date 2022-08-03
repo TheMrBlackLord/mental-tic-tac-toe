@@ -1,7 +1,7 @@
 import { Chars } from "./types";
 
 export interface IMessage {
-   type: "connect" | "disconnect" | "confirm";
+   type: "connect" | "disconnect" | "confirm" | "turn";
 }
 export interface IConnectMessage extends IMessage { 
    type: 'connect';
@@ -13,6 +13,13 @@ export interface IConfirmMessage extends IMessage {
    type: 'confirm';
    room: string;
    confirmFrom: string;
+}
+export interface ITurnMessage extends IMessage {
+   type: 'turn';
+   room: string;
+   char: Chars;
+   x: number;
+   y: number;
 }
 export interface IGames {
    [id: string]: {

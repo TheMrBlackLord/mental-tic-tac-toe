@@ -7,7 +7,10 @@ export interface IMessage {
       | "opponent_connected"
       | "get_opponent"
       | "opponent_disconnected"
-      | "opponent_confirmed";
+      | "opponent_confirmed"
+      | "game_started"
+      | "your_turn"
+      | "opponent_turn";
 }
 export interface IConnectedMessage extends IMessage { 
    type: 'connected';

@@ -11,3 +11,4 @@ export type Players = {
    me: Player | null;
    opponent: Player | null;
 }
+export type Turning = 'me' | 'opponent' | null;
