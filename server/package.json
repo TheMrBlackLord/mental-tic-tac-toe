@@ -1,7 +1,7 @@
 {
-  "name": "mental-tic-tac-toe-baacked",
+  "name": "tic-tac-toe-backend",
   "version": "1.0.0",
-  "description": "Backend for mental tic tac toe",
+  "description": "Backend for tic tac toe",
   "main": "dist/server.js",
   "scripts": {
     "serve": "nodemon src/server.ts"
