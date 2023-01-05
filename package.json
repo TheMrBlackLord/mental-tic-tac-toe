@@ -1,8 +1,13 @@
 {
-  "devDependencies": {
-    "concurrently": "^7.3.0"
-  },
-  "scripts": {
-    "start": "concurrently \"cd server && npm run serve\" \"cd client && npm start\""
-  }
+   "devDependencies": {
+      "concurrently": "^7.3.0",
+      "lerna": "^6.3.0"
+   },
+   "scripts": {
+      "start": "lerna run start --scope '{client,tic-tac-toe-backend}'"
+   },
+   "name": "tic-tac-toe",
+   "workspaces": [
+      "packages/*"
+   ]
 }
