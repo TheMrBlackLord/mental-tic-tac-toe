@@ -1,0 +1,16 @@
+{
+  "name": "common",
+  "version": "0.0.0",
+  "description": "common files",
+  "author": "TheMrBlackLord",
+  "homepage": "https://github.com/TheMrBlackLord/tic-tac-toe#readme",
+  "license": "ISC",
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheMrBlackLord/tic-tac-toe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TheMrBlackLord/tic-tac-toe/issues"
+  }
+}

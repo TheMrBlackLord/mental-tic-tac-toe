@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from "./hooks";
 import styles from "./styles/App.module.css";
 import { useParams } from "react-router-dom";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { IMessage, IConnectedMessage } from "./interfaces";
+import { IConnectedMessage, IMessage } from "./interfaces";
 import { setPlayersMe, setPlayersOpponent, setTurning } from "./store/GameSlice";
 
 function App() {
