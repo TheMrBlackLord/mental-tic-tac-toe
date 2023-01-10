@@ -1,18 +1,19 @@
+import { createClient, RedisClientType } from '@redis/client';
+import { Message, MessageTypes } from 'common';
 import dotenv from 'dotenv';
 import express from 'express';
-import expressWs from 'express-ws';
-import { RedisClientType, createClient } from '@redis/client';
-import { MessageTypes } from 'common';
+import { createServer } from 'http';
 import uniqueId from 'lodash/uniqueId';
-import { WebSocketWithID } from './interfaces';
+import { Server } from 'ws';
 import { handlerFactory } from './handlers';
-import { Message } from 'common';
+import { WebSocketWithID } from './interfaces';
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
-const { app, getWss } = expressWs(express());
+const server = createServer(express());
+const wss = new Server({ server });
 const redisClient: RedisClientType = createClient({
    url: REDIS_URL
 });
@@ -20,7 +21,7 @@ redisClient.on('error', err => { throw err });
 
 const { connectHandler } = handlerFactory(redisClient);
 
-app.ws('/', (ws: WebSocketWithID) => {
+wss.on('/', (ws: WebSocketWithID) => {
    ws.id = uniqueId();
    ws.on('message', async (msg) => {
       const message: Message = JSON.parse(msg.toString());
@@ -35,7 +36,7 @@ app.ws('/', (ws: WebSocketWithID) => {
 bootstrap();
 
 async function bootstrap() {
-   app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+   server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
    await redisClient.connect();
    // redisClient.set('3', '234');
 }
