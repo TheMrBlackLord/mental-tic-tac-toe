@@ -4,9 +4,9 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { createServer } from 'http';
 import uniqueId from 'lodash/uniqueId';
-import { Server } from 'ws';
+import { Server, WebSocket } from 'ws';
 import { handlerFactory } from './handlers';
-import { WebSocketWithID } from './interfaces';
+import { senderFactory } from './messageSender';
 
 dotenv.config();
 
@@ -19,15 +19,24 @@ const redisClient: RedisClientType = createClient({
 });
 redisClient.on('error', err => { throw err });
 
-const { connectHandler } = handlerFactory(redisClient);
+const messageSender = senderFactory(wss.clients);
+const { connectHandler } = handlerFactory(redisClient, messageSender);
 
-wss.on('/', (ws: WebSocketWithID) => {
-   ws.id = uniqueId();
-   ws.on('message', async (msg) => {
+wss.on('connection', (ws: WebSocket) => {
+   ws.id = +uniqueId();
+   ws.on('message', async msg => {
       const message: Message = JSON.parse(msg.toString());
       switch (message.type) {
          case MessageTypes.CONNECT:
             await connectHandler(message, ws.id);
+            break;
+         
+         default:
+            const payload = {
+               type: MessageTypes.ERROR,
+               message: 'Invalid message type'
+            }
+            ws.send(JSON.stringify(payload));
             break;
       }
    });

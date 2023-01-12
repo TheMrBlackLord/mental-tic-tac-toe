@@ -1,4 +1,4 @@
-import { IConnectMessage, IDisconnectMessage } from "./interfaces";
+import { IConnectMessage, IDisconnectMessage } from "./interfaces/messageInterfaces";
 
 export type Char = 'x' | 'o';
 
